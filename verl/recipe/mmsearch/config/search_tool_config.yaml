@@ -1,0 +1,35 @@
+tools:
+  - class_name: "my_project.tools.image_search.ImageSearchTool"
+    config:
+      num_workers: 64          # how many concurrent workers this tool can use
+      rate_limit: 64           # maximum calls per second (or per time window, depending on your implementation)
+      timeout: 30              # timeout in seconds for a single image search
+      type: native             # usually "native" for custom python tools
+    tool_schema:
+      type: "function"
+      function:
+        name: "image_search"
+        description: Search for related information using the query image.
+        parameters:
+          type: "object"
+          properties: {}
+          additionalProperties: false
+
+  - class_name: "my_project.tools.text_search.TextSearchTool"
+    config:
+      num_workers: 256         # more workers for pure text search if it is cheap
+      rate_limit: 256          # higher rate limit for text queries
+      timeout: 30              # timeout in seconds for a single text search
+      type: native
+    tool_schema:
+      type: "function"
+      function:
+        name: "text_search"
+        description: "Search the web using a natural language text query."
+        parameters:
+          type: "object"
+          properties:
+            query:
+              type: "string"
+              description: "The natural language search query. The model should formulate a concise query that best represents the user’s request."
+          required: ["query"]
